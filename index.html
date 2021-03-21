@@ -7,11 +7,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="style.css">
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+    
+    <!-- SCRIPTS -->
     <script src="main.js" defer></script>
+    <!-- html version of importing module -->
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.53.1/dist/phaser-arcade-physics.min.js"></script>
 </head>
 
 <body>
 
+    <!-- using script instead of js file bc "import 'phaser" doesn't work?-->
+    <script type="text/javascript">
+        /* ---- Setup ---- */
+        const config = {
+            /* what it will use to render
+               if WebGL fails, uses Canvas */
+            type: Phaser.AUTO,
+
+            // size of canvas element
+            width: 800,
+            height: 600,
+        };
+
+        const game = new Phaser.Game(config);
+    </script>
 </body>
 
 </html>
