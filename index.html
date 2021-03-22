@@ -21,7 +21,7 @@
 
 <body>
 
-    <!-- using script instead of js file bc "import 'phaser" doesn't work?-->
+    <!-- using script instead of js file bc 'import "phaser"' doesn't work?-->
     <script type="text/javascript">
         /* ---- Setup ---- */
         const config = {
@@ -33,6 +33,15 @@
             width: 800,
             height: 600,
 
+            // game physics
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: { y: 300 },
+                    debug: false
+                }
+            },
+
             // game is a sequence of scenes
             // instances need crud functionality for render
             scene: {
@@ -43,34 +52,44 @@
         };
 
         const game = new Phaser.Game(config);
+                var platforms;
 
-    // need to preload assets first
-    function preload() {
-        // assets are sourced from their site
-        this.load.setBaseURL('https://labs.phaser.io/assets');
+        // need to preload assets first
+        function preload() {
+            // assets are sourced from their site
+            this.load.setBaseURL('https://labs.phaser.io/assets');
 
-        // first param is just setting a var name
-        this.load.image('sky', '/skies/sky4.png');
-        this.load.image('ground', '/sprites/platform.png');
-        this.load.image('star', '/phaser3/star2.png');
-        this.load.spritesheet('dude',
-            '/sprites/dude.png',
-            { frameWidth: 32, frameHeight: 48 }
-        );
-    }
+            // first param is just setting a var name
+            // second finishes the url reference
+            this.load.image('sky', '/skies/sky4.png');
+            this.load.image('ground', '/sprites/platform.png');
+            this.load.image('star', '/phaser3/star2.png');
+            this.load.spritesheet('dude',
+                '/sprites/dude.png',
+                { frameWidth: 32, frameHeight: 48 }
+            );
+        }
 
-    // adding assets to browser/canvas
-    function create() {
-        // loaded in order of back to front
-        this.add.image(400, 300, 'sky');
-        this.add.image(400, 300, 'star');
-    }
+        // adding assets to browser/canvas
+        function create() {
+            // loaded in order of back to front
+            this.add.image(400, 300, 'sky');
+            this.add.image(400, 300, 'star');
+
+            // platforms are grouped objects; static
+            platforms = this.physics.add.staticGroup();
+
+            // setting the ground using a platform (scaling up to fill scene
+            // ALWAYS use refreshBody() when rescaling a static obj
+            platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+        }
 
     function update() {
     }
 
     /* WEBSITE TUTORIAL IS OUT OF DATE. FOLLOWING preload() DOES NOT WORK BC FILESTRUCTURE DOESN'T EXIST
         http://phaser.io/tutorials/making-your-first-phaser-3-game/part2 */
+
     // function preload() {
     //     this.load.image('sky', 'assets/sky.png');
     //     this.load.image('ground', 'assets/platform.png');
