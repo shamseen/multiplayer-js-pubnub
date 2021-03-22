@@ -67,7 +67,7 @@
             // second finishes the url reference
             this.load.image('sky', '/skies/sky4.png');
             this.load.image('ground', '/sprites/platform.png');
-            this.load.image('star', '/phaser3/star2.png');
+            this.load.image('star', '/demoscene/star.png');
             this.load.spritesheet('dude',
                 '/sprites/dude.png',
                 { frameWidth: 32, frameHeight: 48 }
@@ -78,8 +78,7 @@
         function create() {
             // loaded in order of back to front
             this.add.image(400, 300, 'sky');
-            this.add.image(400, 300, 'star');
-
+            
             // platforms are grouped objects; static
             platforms = this.physics.add.staticGroup();
 
@@ -93,6 +92,21 @@
             platforms.create(50, 250, 'ground');
             platforms.create(750, 220, 'ground');
 
+            /* ---- Falling star objects! ---- */
+            // group is NOT static
+            stars = this.physics.add.group({
+                key: 'star', // texture key
+                repeat: 11, // 12 stars total
+                setXY: { x: 12, y: 0, stepX: 70 } // sibling spacing = 70px
+            });
+
+            // collide with platforms
+            this.physics.add.collider(stars, platforms);
+
+            // random bounce value
+            stars.children.iterate(function (child) {
+                child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+            });
 
             /* --- creating a player character! ---- */
             player = this.physics.add.sprite(100, 450, 'dude')
