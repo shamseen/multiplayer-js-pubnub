@@ -82,6 +82,12 @@
             // setting the ground using a platform (scaling up to fill scene
             // ALWAYS use refreshBody() when rescaling a static obj
             platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+
+            // adding floating platforms
+            // no rescale so no refresh()
+            platforms.create(600, 400, 'ground');
+            platforms.create(50, 250, 'ground');
+            platforms.create(750, 220, 'ground');
         }
 
     function update() {
