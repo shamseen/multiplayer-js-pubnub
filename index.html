@@ -34,6 +34,7 @@
             height: 600,
 
             // game physics
+            // Object factory: this.physics.add(foo)
             physics: {
                 default: 'arcade',
                 arcade: {
@@ -96,6 +97,10 @@
             // setting sprite object physics
             player.setCollideWorldBounds(true); // stays within canvas
             player.setBounce(0.2); // bounces when he hits the edge
+
+            // detect collision with platforms
+            // so sprite doesn't fall thru to screen bottom
+            this.physics.add.collider(player, platforms);
         }
 
     function update() {
