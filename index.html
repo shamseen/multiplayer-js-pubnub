@@ -78,7 +78,7 @@
         function create() {
             // loaded in order of back to front
             this.add.image(400, 300, 'sky');
-            
+
             // platforms are grouped objects; static
             platforms = this.physics.add.staticGroup();
 
@@ -118,6 +118,11 @@
             // detect collision with platforms
             // so sprite doesn't fall thru to screen bottom
             this.physics.add.collider(player, platforms);
+
+            // detect overlap with stars => collect
+            this.physics.add.collider(stars, platforms); // allow for collision
+            this.physics.add.overlap(player, stars, collectStar, null, this);
+            // upon overlap, call collectStar();
 
             /* ---- animations ---- */
             this.anims.create({
@@ -173,6 +178,12 @@
         if (cursors.up.isDown && player.body.touching.down) {
             player.setVelocityY(-300); // height of jump
         } 
+    }
+
+    function collectStar(player, star) {
+
+        // make star invisible
+        star.disableBody(true, true);
     }
     /* WEBSITE TUTORIAL IS OUT OF DATE. FOLLOWING preload() DOES NOT WORK BC FILESTRUCTURE DOESN'T EXIST
         http://phaser.io/tutorials/making-your-first-phaser-3-game/part2 */
