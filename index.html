@@ -149,11 +149,16 @@
         }
 
         // if neither left/right, then stop moving, faces you
+        // stop/start style of movement
         else {
             player.setVelocityX(0);
-
             player.anims.play('turn');
         }
+
+        // jumping: check if on the floor so no double jumps
+        if (cursors.up.isDown && player.body.touching.down) {
+            player.setVelocityY(-300); // height of jump
+        } 
     }
     /* WEBSITE TUTORIAL IS OUT OF DATE. FOLLOWING preload() DOES NOT WORK BC FILESTRUCTURE DOESN'T EXIST
         http://phaser.io/tutorials/making-your-first-phaser-3-game/part2 */
