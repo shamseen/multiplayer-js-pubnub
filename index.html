@@ -53,6 +53,8 @@
         };
 
         const game = new Phaser.Game(config);
+        var score = 0;
+        var scoreText;
         var platforms;
         var player;
         var cursor;
@@ -78,6 +80,9 @@
         function create() {
             // loaded in order of back to front
             this.add.image(400, 300, 'sky');
+
+            // show player score (coordinates, default string, styling)
+            scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
             // platforms are grouped objects; static
             platforms = this.physics.add.staticGroup();
@@ -177,6 +182,10 @@
 
         // make star invisible
         star.disableBody(true, true);
+
+        // add to player score
+        score += 10;
+        scoreText.setText('Score: ' + score);
     }
 
     function createPlatforms(platforms) {
