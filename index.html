@@ -53,7 +53,10 @@
         };
 
         const game = new Phaser.Game(config);
-                var platforms;
+        var platforms;
+                var player;
+                var cursor;
+                                
 
         // need to preload assets first
         function preload() {
@@ -92,7 +95,7 @@
 
 
             /* --- creating a player character! ---- */
-            const player = this.physics.add.sprite(100, 450, 'dude');
+            player = this.physics.add.sprite(100, 450, 'dude')
 
             // setting sprite object physics
             player.setCollideWorldBounds(true); // stays within canvas
@@ -101,9 +104,29 @@
             // detect collision with platforms
             // so sprite doesn't fall thru to screen bottom
             this.physics.add.collider(player, platforms);
+
+            /* ---- animations ---- */
+            this.anims.create({
+                // keyboard trigger
+                key: 'left',
+
+                // which frames in spritesheet to use
+                frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
+                frameRate: 10,
+                repeat: -1 // loops thru set frames
+            });
+
+            // setting trigger
+            cursors = this.input.keyboard.createCursorKeys();
         }
 
     function update() {
+
+        // defining what happens w/ each keyboard trigger
+        if (cursors.left.isDown) {
+            player.setVelocityX(-160); // left = negative x axis
+            player.anims.play('left', true); // calling 'left' anim from before
+        }
     }
     /* WEBSITE TUTORIAL IS OUT OF DATE. FOLLOWING preload() DOES NOT WORK BC FILESTRUCTURE DOESN'T EXIST
         http://phaser.io/tutorials/making-your-first-phaser-3-game/part2 */
