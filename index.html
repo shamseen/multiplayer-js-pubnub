@@ -56,9 +56,10 @@
         var score = 0;
         var scoreText;
         var platforms;
-                                                            var asteroids;
+        var asteroids;
         var player;
         var cursor;
+    var gameOver;
                                 
 
         // need to preload assets first
@@ -107,16 +108,17 @@
             });
 
 
-            /* -- Falling Asteroids! Released when a star is collected -- */
-            asteroids = this.physics.add.group();
-            this.physics.add.collider(asteroids, platforms);
-
             /* --- creating a player character! ---- */
             player = this.physics.add.sprite(100, 450, 'dude')
 
             // setting sprite object physics
             player.setCollideWorldBounds(true); // stays within canvas
             player.setBounce(0.2); // bounces when he hits the edge
+
+            /* -- Falling Asteroids! Released when a star is collected -- */
+            asteroids = this.physics.add.group();
+            this.physics.add.collider(asteroids, platforms);
+            this.physics.add.collider(player, asteroids, asteroidHit, null, this);
 
             // detect collision with platforms
             // so sprite doesn't fall thru to screen bottom
@@ -158,6 +160,11 @@
 
         function update() {
 
+            // game over logic
+            if (gameOver) {
+                return;
+            }
+
             // defining what happens w/ each keyboard trigger
             if (cursors.left.isDown) {
                 player.setVelocityX(-160); // left = negative x axis
@@ -183,6 +190,18 @@
             } 
         }
 
+        function asteroidHit(player, ast) {
+
+            // if hit, stop everything
+            this.physics.pause();
+
+            // fade player, reset sprite
+            player.setTint(0xff0000);
+            player.anims.play('turn');
+
+            // end game
+            gameOver = true;
+        }
         function collectStar(player, star) {
             // test
             console.log('collected star');
@@ -219,10 +238,10 @@
             platforms.create(750, 220, 'ground');
         }
 
-                            function dropAsteroid(x) {
-                                console.log('drop ast');
+        function dropAsteroid(x) {
+
             // Group.create() returns instance of new object
-                            var ast = asteroids.create(x, 16, 'asteroid').setScale(0.5);
+            var ast = asteroids.create(x, 16, 'asteroid').setScale(0.5);
             ast.setBounce(1);
             ast.setCollideWorldBounds(true);
             ast.setVelocity(Phaser.Math.Between(-200, 200), 20); // variable velocity
