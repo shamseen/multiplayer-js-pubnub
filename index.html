@@ -56,6 +56,7 @@
         var score = 0;
         var scoreText;
         var platforms;
+                                                            var asteroids;
         var player;
         var cursor;
                                 
@@ -70,6 +71,7 @@
             this.load.image('sky', '/skies/sky4.png');
             this.load.image('ground', '/sprites/platform.png');
             this.load.image('star', '/demoscene/star.png');
+            this.load.image('asteroid', '/games/asteroids/asteroid2.png');
             this.load.spritesheet('dude',
                 '/sprites/dude.png',
                 { frameWidth: 32, frameHeight: 48 }
@@ -103,6 +105,15 @@
             stars.children.iterate(function (child) {
                 child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
             });
+
+
+            /* -- Falling Asteroids! -- */
+            asteroids = this.physics.add.group();
+            this.physics.add.collider(asteroids, platforms);
+            var ast = asteroids.create(10, 16, 'asteroid').setScale(0.5);
+            ast.setBounce(1);
+            ast.setCollideWorldBounds(true);
+            ast.setVelocity(Phaser.Math.Between(-200, 200), 20);
 
             /* --- creating a player character! ---- */
             player = this.physics.add.sprite(100, 450, 'dude')
